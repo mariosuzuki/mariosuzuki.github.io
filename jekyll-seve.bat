@@ -1,0 +1,1 @@
+jekyll server --config="_config_dev.yml"

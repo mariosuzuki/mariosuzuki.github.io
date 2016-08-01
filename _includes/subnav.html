@@ -1,0 +1,39 @@
+{% assign url_parts = page.url | split: '/' %}
+{{ url_parts }}<br />
+
+{% assign url_parts_size = url_parts | size %}
+{{ url_parts_size }}<br />
+
+{% assign rm = url_parts | last %}
+{{ rm }}<br />
+
+{% assign base_url = page.url | replace: rm %}
+{{ base_url }}<br />
+
+<ul>
+{% for node in site.pages %}
+  {% if node.url contains base_url %}
+    {% assign node_url_parts = node.url | split: '/' %}
+    {% assign node_url_parts_size = node_url_parts | size %}
+    {% assign filename = node_url_parts | last %}
+    {% if url_parts_size == node_url_parts_size and filename != 'index.html' %}
+      <li><a href='{{node.url}}'>{{node.title}}</a></li>
+    {% endif %}
+  {% endif %}
+{% endfor %}
+</ul>
+
+
+<ul>
+{% for link in linklists.main-menu.links %}
+<li><a href="{{ link.url| escape }}">{{ link.title | escape }}</a>
+{% if linklists[link.handle].links.size > 0 %}
+<ul>
+{% for sublink in linklists.[link.handle].links %}
+<li><a href="{{ sublink.url }}">{{ sublink.title | escape }}</a></li>
+{% endfor %}
+</ul>
+{% endif %} 
+</li>
+{% endfor %}
+</ul>
